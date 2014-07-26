@@ -3,67 +3,59 @@ package com.mygdx.game.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.mygdx.game.helpers.InputHandler;
-import com.mygdx.game.world.GameWorld;
 import com.mygdx.game.renderer.GameRenderer;
+import com.mygdx.game.world.GameWorld;
 
 public class GameScreen implements Screen {
 
-    private GameWorld world;
-    private GameRenderer renderer;
-    private float runTime;
+	private GameWorld world;
+	private GameRenderer renderer;
+	private float runTime;
 
-    // This is the constructor, not the class declaration
-    public GameScreen() {
+	// This is the constructor, not the class declaration
+	public GameScreen() {
 
-        float screenWidth = Gdx.graphics.getWidth();
-        float screenHeight = Gdx.graphics.getHeight();
-        float gameWidth = 136;
-        float gameHeight = screenHeight / (screenWidth / gameWidth);
+		float screenWidth = Gdx.graphics.getWidth();
+		float screenHeight = Gdx.graphics.getHeight();
+		float gameWidth = 136;
+		float gameHeight = screenHeight / (screenWidth / gameWidth);
+		int midPointY = (int) (gameHeight / 2);
 
-        int midPointY = (int) (gameHeight / 2);
+		world = new GameWorld(midPointY);
+		Gdx.input.setInputProcessor(new InputHandler(world, screenWidth / gameWidth, screenHeight / gameHeight));
+		renderer = new GameRenderer(world, (int) gameHeight, midPointY);
+		world.setRenderer(renderer);
+	}
 
-        world = new GameWorld(midPointY);
-        renderer = new GameRenderer(world, (int) gameHeight, midPointY);
+	@Override
+	public void render(float delta) {
+		runTime += delta;
+		world.update(delta);
+		renderer.render(delta, runTime);
+	}
 
-        Gdx.input.setInputProcessor(new InputHandler(world));
+	@Override
+	public void resize(int width, int height) {
+	}
 
-    }
+	@Override
+	public void show() {
+	}
 
-    @Override
-    public void render(float delta) {
-        runTime += delta;
-        world.update(delta);
-        renderer.render(runTime);
-    }
+	@Override
+	public void hide() {
+	}
 
-    @Override
-    public void resize(int width, int height) {
-        System.out.println("GameScreen - resizing");
-    }
+	@Override
+	public void pause() {
+	}
 
-    @Override
-    public void show() {
-        System.out.println("GameScreen - show called");
-    }
+	@Override
+	public void resume() {
+	}
 
-    @Override
-    public void hide() {
-        System.out.println("GameScreen - hide called");
-    }
-
-    @Override
-    public void pause() {
-        System.out.println("GameScreen - pause called");
-    }
-
-    @Override
-    public void resume() {
-        System.out.println("GameScreen - resume called");
-    }
-
-    @Override
-    public void dispose() {
-        // Leave blank
-    }
+	@Override
+	public void dispose() {
+	}
 
 }
