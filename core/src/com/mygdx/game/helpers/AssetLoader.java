@@ -22,7 +22,8 @@ public class AssetLoader {
     public static Sound dead, flap, coin, fall;
     public static BitmapFont font, shadow, whiteFont;
     private static Preferences prefs;
-    private static String windowsDataPath = "android\\assets\\data\\";
+    private static String windowsDataPath =
+            "android" + File.separator + "assets" + File.separator + "data" + File.separator;
 
     public static void load() {
 
