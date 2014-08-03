@@ -3,11 +3,14 @@ package com.mygdx.game.helpers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
+import java.io.File;
 
 public class AssetLoader {
 
@@ -20,15 +23,18 @@ public class AssetLoader {
 	public static Sound dead, flap, coin, fall;
 	public static BitmapFont font, shadow, whiteFont;
 	private static Preferences prefs;
+    private static String windowsDataPath = "android\\assets\\data\\";
 
 	public static void load() {
 
-		logoTexture = new Texture(Gdx.files.internal("data/logo.png"));
+        String dataPath = getDataPath();
+
+        logoTexture = new Texture(Gdx.files.internal(dataPath + "logo.png"));
 		logoTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		logo = new TextureRegion(logoTexture, 0, 0, 512, 114);
 
-		texture = new Texture(Gdx.files.internal("data/texture2.png"));
+		texture = new Texture(Gdx.files.internal(dataPath + "texture2.png"));
 		texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 
 		playButtonUp = new TextureRegion(texture, 0, 83, 29, 16);
@@ -49,9 +55,9 @@ public class AssetLoader {
 		scoreboard.flip(false, true);
 
 		star = new TextureRegion(texture, 152, 70, 10, 10);
-		noStar = new TextureRegion(texture, 165, 70, 10, 10);
+        star.flip(false, true);
 
-		star.flip(false, true);
+		noStar = new TextureRegion(texture, 165, 70, 10, 10);
 		noStar.flip(false, true);
 
 		highScore = new TextureRegion(texture, 59, 101, 48, 7);
@@ -102,18 +108,18 @@ public class AssetLoader {
 		bar = new TextureRegion(texture, 136, 16, 22, 3);
 		bar.flip(false, true);
 
-		dead = Gdx.audio.newSound(Gdx.files.internal("data/dead.wav"));
-		flap = Gdx.audio.newSound(Gdx.files.internal("data/flap.wav"));
-		coin = Gdx.audio.newSound(Gdx.files.internal("data/coin.wav"));
-		fall = Gdx.audio.newSound(Gdx.files.internal("data/fall.wav"));
+		dead = Gdx.audio.newSound(Gdx.files.internal(dataPath + "dead.wav"));
+		flap = Gdx.audio.newSound(Gdx.files.internal(dataPath + "flap.wav"));
+		coin = Gdx.audio.newSound(Gdx.files.internal(dataPath + "coin.wav"));
+		fall = Gdx.audio.newSound(Gdx.files.internal(dataPath + "fall.wav"));
 
-		font = new BitmapFont(Gdx.files.internal("data/text.fnt"));
+		font = new BitmapFont(Gdx.files.internal(dataPath + "text.fnt"));
 		font.setScale(.25f, -.25f);
 
-		whiteFont = new BitmapFont(Gdx.files.internal("data/whitetext.fnt"));
+		whiteFont = new BitmapFont(Gdx.files.internal(dataPath + "whitetext.fnt"));
 		whiteFont.setScale(.1f, -.1f);
 
-		shadow = new BitmapFont(Gdx.files.internal("data/shadow.fnt"));
+		shadow = new BitmapFont(Gdx.files.internal(dataPath + "shadow.fnt"));
 		shadow.setScale(.25f, -.25f);
 
 		// Create (or retrieve existing) preferences file
@@ -146,4 +152,10 @@ public class AssetLoader {
 		shadow.dispose();
 	}
 
+    public static String getDataPath() {
+        if (System.getProperty("os.name").startsWith("Windows"))
+            return windowsDataPath + File.separator ;
+        else
+            return "data" + File.separator;
+    }
 }
